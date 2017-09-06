@@ -14,8 +14,10 @@ define('DEBUG', true);
 // echo "</pre>";
 
 $info = pathinfo($_SERVER['REQUEST_URI']);
+print_r($info);
 $controller = substr($info['dirname'], strrpos($info['dirname'], "/")+1);
 $model = substr($info['basename'], 0,strpos($info['basename'], "?")); 
+$model = $model ? $model : "index";
 $params = $_SERVER['QUERY_STRING'];
 spl_autoload_register(function ($controller) {
     include BASE_DIR.'/core/controller.php';
@@ -25,7 +27,9 @@ spl_autoload_register(function ($controller) {
 
 // $url = BASE_DIR.'/controller/'.$controller.'Controller.php';
 // require($url);
-new OrderController();
+$instance = new IndexController();
+$action = 'action'.ucfirst($model);
+$instance->$action();
 ?>
 </body>
 </html>
